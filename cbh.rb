@@ -1,18 +1,22 @@
 
 
 
-Shoes.app :title => "Clipboard History", :width => 700, :height => 700, :resizable => false do
+Shoes.app :title => "Clipboard History", :width => 700, :resizable => true do
   background dimgray
   #border white, :strokewidth => 5
   
   @index = 0
-  @elements = clipboard() ? [clipboard()] : [0]
+  @elements = Array.new(1, "Just an intial placeholder.")
 
+    
+    
+    
+    
     
   
   stack :height => 32, :width => "100%" do
     background darkblue
-    border gainsboro, :strokewidth => 3
+    #border gainsboro, :strokewidth => 3
     @title = para "Clipboard entry %03d" % (@index + 1), :size => 16, 
     :stroke => white, :align => "center", :weight => 900
   end
@@ -20,20 +24,30 @@ Shoes.app :title => "Clipboard History", :width => 700, :height => 700, :resizab
   stack :width => 350, :margin => 5 do
     #background gray
     #border dimgray, :strokewidth => 2
-    flow :left => 100 do #:left => 100, :right => 100
+    flow do#:left => 100 do #:left => 100, :right => 100
       @prev = button "Prev", :width => "33%"
       @next = button "Next", :width => "33%"
       @copy = button "Copy to clipboard", :width => "34%"
     end
     #self.move(5,32)
   end
-  
-  stack :width => 700 do
-    background silver
-    border gainsboro, :strokewidth => 10
-    @clipboard = para "#{@elements[@index]}", :stroke => black, :size => 10, :left => 85, :top => 20
+
+  stack do  
+    background cornsilk
+    background gainsboro, :strokewidth => 3, :height => 6
+    #background gainsboro, :strokewidth => 3, :width => 6
+    #background gainsboro, :strokewidth => 3, :width => 6, :left => 688
+    #border gainsboro, :strokewidth => 10
+    @clipboard = para "#{@elements[@index]}", :weight => 600, :margin => 20,:stroke => black, :size => 10#, :left => 85, :top => 120
+  end
+  stack do
+    background gainsboro, :strokewidth => 3, :height => 6
   end
   
+
+
+
+
 
   
   @prev.click do
@@ -52,9 +66,10 @@ Shoes.app :title => "Clipboard History", :width => 700, :height => 700, :resizab
     app.clipboard = @elements[@index]
   end
 
-  animate(3) do
-    if clipboard() != @elements.last
-      @elements << clipboard()
+  animate(1) do
+    cb = clipboard()
+    if cb != @elements.last
+      @elements << cb
       @index = @elements.length - 1
       @clipboard.text = @elements[@index]
       @title.text = "Clipboard entry %03d" % (@index + 1)
